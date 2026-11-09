@@ -1862,6 +1862,12 @@ void app_frame::initialise_commands()
 	_commands[commands::edit_item_save_and_next]->text_can_change = true;
 
 	_commands[commands::play]->icon_can_change = true;
+
+	_commands[commands::play_seekback]->icon_can_change = true;
+	_commands[commands::play_seekforward]->icon_can_change = true;
+	_commands[commands::play_fastseekback]->icon_can_change = true;
+	_commands[commands::play_fastseekforward]->icon_can_change = true;
+
 	_commands[commands::view_fullscreen]->icon_can_change = true;
 	_commands[commands::repeat_toggle]->icon_can_change = true;
 	_commands[commands::playback_volume_toggle]->icon_can_change = true;
@@ -2078,6 +2084,12 @@ void app_frame::initialise_commands()
 	add_command_invoke(commands::pin_item, [this] { pin_invoke(_state); });
 	add_command_invoke(commands::play, [this] { _state.play(_view_frame); });
 	add_command_invoke(commands::slideshow, [this] { _state.toggle_slideshow(_view_frame); });
+
+	add_command_invoke(commands::play_fastseekback, [this] { _state.seek(_view_frame, -5); });
+	add_command_invoke(commands::play_seekback, [this] { _state.seek(_view_frame, -1); });
+	add_command_invoke(commands::play_seekforward, [this] { _state.seek(_view_frame, 1); });
+	add_command_invoke(commands::play_fastseekforward, [this] { _state.seek(_view_frame, 5); });
+
 	add_command_invoke(commands::print, [this] { print_invoke(_state, _app_frame, _view_frame); });
 	add_command_invoke(commands::rate_none, [this] { rate_items_invoke(_state, _app_frame, _view_frame, 0); });
 	add_command_invoke(commands::rate_1, [this] { rate_items_invoke(_state, _app_frame, _view_frame, 1); });
@@ -2268,6 +2280,12 @@ void app_frame::initialise_commands()
 			find_command(commands::view_fullscreen),
 			find_command(commands::play),
 			find_command(commands::slideshow),
+
+			find_command(commands::play_fastseekback),
+			find_command(commands::play_seekback),
+			find_command(commands::play_seekforward),
+			find_command(commands::play_fastseekforward),
+
 			find_command(commands::browse_search),
 			nullptr,
 			find_command(commands::menu_navigate),

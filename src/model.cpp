@@ -893,6 +893,24 @@ void view_state::stop()
 	invalidate_view(view_invalid::command_state | view_invalid::screen_saver);
 }
 
+double view_state::new_pos(display_state_ptr d, const int fraction)
+{
+	const double media_start = d->media_start();
+	const double media_end = d->media_end();
+	const double new_time_pos = d->media_pos() + (fraction * 15.0);
+	return new_time_pos < media_start ? media_start : new_time_pos > media_end ? media_end : new_time_pos;
+}
+
+void view_state::seek(const view_host_base_ptr& view, int fraction)
+{
+	const auto d = _display;
+
+	if (d)
+	{
+		_player->seek(d->_session, new_pos(d, fraction), false);
+	}
+}
+
 bool display_state_t::publish_av_session(const std::shared_ptr<av_session>& ses, const uint32_t generation)
 {
 	if (generation != _av_generation) return false;

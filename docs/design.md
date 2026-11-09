@@ -204,8 +204,10 @@ Play controls the displayed audio/video. Slideshow walks visible photo/video/aud
 focused item, holds photos for the configured delay, plays timed media to completion, and stops when
 no eligible next item exists. Repeat controls sequence ends; normal continuation and Slideshow are
 separate choices. Resume stores playback position in the rebuildable index and never changes media.
-Seeking while paused updates the displayed frame, progress bar, and elapsed time without resuming
-playback or requiring a hover preview.
+Seek Back and Seek Forward move by 15 seconds; their Fast variants move by 75 seconds. Each step is
+relative to the currently displayed position and stops at the media's start or end. Seeking while
+paused updates the displayed frame, progress bar, and elapsed time without resuming playback or
+requiring a hover preview.
 
 A Commodore 64 SID tune plays as audio, emulated rather than decoded. The file does not say how long a
 tune lasts, so each plays for three minutes, fading out over the last three seconds, and always from

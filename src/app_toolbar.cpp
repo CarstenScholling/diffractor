@@ -41,6 +41,10 @@
 
 bool toggle_details_state = false;
 
+// libdesktop exposes these numpad keys as virtual-key values, without named constants.
+static constexpr char32_t key_numpad_multiply = 0x6A;
+static constexpr char32_t key_numpad_divide = 0x6F;
+
 // The address bar shows the scope of the current search: a folder, a folder searched recursively,
 // or the kind of the first term. The star glyph is reserved for ratings, so fall back to the
 // generic search icon rather than showing it here.
@@ -854,6 +858,12 @@ void app_frame::update_button_state(const bool resize)
 		nullptr);
 	_commands[commands::play]->enable = is_media_or_items_view && (can_play_media || is_playing);
 	_commands[commands::slideshow]->enable = is_media_or_items_view && _state.can_slideshow();
+
+	_commands[commands::play_seekback]->enable = is_single_media_selection && (can_play_media || is_playing);
+	_commands[commands::play_seekforward]->enable = is_single_media_selection && (can_play_media || is_playing);
+	_commands[commands::play_fastseekback]->enable = is_single_media_selection && (can_play_media || is_playing);
+	_commands[commands::play_fastseekforward]->enable = is_single_media_selection && (can_play_media || is_playing);
+
 	_commands[commands::playback_auto_play]->enable = is_media_or_items_view;
 	_commands[commands::playback_auto_advance]->enable = is_media_or_items_view;
 	_commands[commands::playback_last_played_pos]->enable = is_media_or_items_view;
@@ -1072,6 +1082,11 @@ void app_frame::update_button_state(const bool resize)
 	_commands[commands::play]->checked = is_playing_media;
 	_commands[commands::slideshow]->checked = is_slideshow;
 
+	_commands[commands::play_seekback]->checked = is_playing_media;
+	_commands[commands::play_seekforward]->checked = is_playing_media;
+	_commands[commands::play_fastseekback]->checked = is_playing_media;
+	_commands[commands::play_fastseekforward]->checked = is_playing_media;
+
 	_commands[commands::pin_item]->checked = _state.has_pin();
 	_commands[commands::option_highlight_large_items]->checked = setting.highlight_large_items;
 	_commands[commands::sort_dates_descending]->checked = setting.sort_dates_descending;
@@ -1133,6 +1148,12 @@ void app_frame::update_button_state(const bool resize)
 
 	_commands[commands::play]->icon = is_playing_media ? icon_index::pause : icon_index::play;
 	_commands[commands::slideshow]->icon = is_slideshow ? icon_index::pause : icon_index::slideshow;
+
+	_commands[commands::play_seekback]->icon = icon_index::back;
+	_commands[commands::play_seekforward]->icon = icon_index::next;
+	_commands[commands::play_fastseekback]->icon = icon_index::back;
+	_commands[commands::play_fastseekforward]->icon = icon_index::next;
+
 	_commands[commands::view_fullscreen]->icon = _state.is_full_screen
 		                                             ? icon_index::fullscreen_exit
 		                                             : icon_index::fullscreen;
@@ -1298,6 +1319,10 @@ std::vector<command_accelerator> default_keyboard_accelerators()
 		{commands::view_zoom_pane_flip, {keys::TAB}},
 		{commands::play, {keys::SPACE}},
 		{commands::slideshow, {keys::SPACE, shift}},
+		{commands::play_seekback, {key_numpad_divide}},
+		{commands::play_seekforward, {key_numpad_multiply}},
+		{commands::play_fastseekback, {key_numpad_divide, control}},
+		{commands::play_fastseekforward, {key_numpad_multiply, control}},
 		{commands::browse_forward, {keys::RIGHT, alt}},
 		{commands::browse_next_folder, {keys::RIGHT, alt | control}},
 		{commands::browse_next_item_extend, {keys::RIGHT, control}},
@@ -1420,6 +1445,12 @@ void app_frame::update_command_text()
 	def_command(commands::play, command_group::media_playback, icon_index::play, tt.command_play, tt.tooltip_play);
 	def_command(commands::slideshow, command_group::media_playback, icon_index::slideshow, tt.command_slideshow,
 	            tt.tooltip_slideshow);
+
+	def_command(commands::play_seekback, command_group::media_playback, icon_index::back, tt.command_play_seekback, tt.tooltip_play_seekback);
+	def_command(commands::play_seekforward, command_group::media_playback, icon_index::next, tt.command_play_seekforward, tt.tooltip_play_seekforward);
+	def_command(commands::play_fastseekback, command_group::media_playback, icon_index::back, tt.command_play_fastseekback, tt.tooltip_play_fastseekback);
+	def_command(commands::play_fastseekforward, command_group::media_playback, icon_index::next, tt.command_play_fastseekforward, tt.tooltip_play_fastseekforward);
+
 	def_command(commands::print, command_group::tools, icon_index::print, tt.command_print);
 	def_command(commands::rate_none, command_group::rate_flag, icon_index::none, tt.command_rate_0);
 	def_command(commands::rate_1, command_group::rate_flag, icon_index::none, tt.command_rate_1);

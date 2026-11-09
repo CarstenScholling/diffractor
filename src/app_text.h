@@ -1557,6 +1557,17 @@ struct app_text_t
 	plural_text movie_relink_fmt = {"1 clip was relinked.", "{count} clips were relinked."};
 	// A sidebar row's tooltip: how many of the items the view shows the row's search would keep.
 	plural_text sidebar_kept_fmt = {"1 of the items shown", "{count} of the items shown"};
+
+	text_t command_play_seekback = "Seek Back"sv;
+	text_t tooltip_play_seekback = "Seek back in the current media."sv;
+	text_t command_play_seekforward = "Seek Forward"sv;
+	text_t tooltip_play_seekforward = "Seek forward in the current media."sv;
+	text_t command_play_fastseekback = "Fast Seek Back"sv;
+	text_t tooltip_play_fastseekback = "Fast seek back in the current media."sv;
+	text_t command_play_fastseekforward = "Fast Seek Forward"sv;
+	text_t tooltip_play_fastseekforward = "Fast seek forward in the current media."sv;
+	text_t keyboard_divide = "numpad-/"sv;
+	text_t keyboard_multiply = "numpad-*"sv;
 };
 
 extern app_text_t tt;

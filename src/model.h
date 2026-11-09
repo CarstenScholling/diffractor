@@ -1757,6 +1757,9 @@ public:
 	void play(const view_host_base_ptr& view);
 	void toggle_slideshow(const view_host_base_ptr& view);
 
+	double new_pos(display_state_ptr d, const int fraction);
+	void seek(const view_host_base_ptr& view, int fraction);
+
 	df::unique_items existing_items() const;
 
 	void append_items(const view_host_base_ptr& view, df::item_set items, const df::unique_paths& selection,
